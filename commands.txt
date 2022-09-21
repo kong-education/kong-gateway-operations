@@ -1516,14 +1516,14 @@ http POST kongcluster:8001/consumers/Jane/key-auth key=JanePassword
 for ((i=0;i<64;i++))
   do
     sleep 1
-    http -h GET $KONG_PROXY_URI/mockbin/request?apikey=JanePassword | head -1
-  done
+    http -h GET $KONG_PROXY_URI/mockbin/request?apikey=JanePassword > /dev/null 2>&1
+  done &
 
 ### for ((i=0;i<64;i++))
       do
         sleep 1
-        curl -IsX GET $KONG_PROXY_URI/mockbin/request?apikey=JanePassword | head -1
-      done
+        curl -IsX GET $KONG_PROXY_URI/mockbin/request?apikey=JanePassword > /dev/null 2>&1
+      done &
 
 
 ## Task: Get Metrics from Vitals API
