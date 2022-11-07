@@ -52,7 +52,7 @@ services:
   kong-migrations:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.0
     container_name: kong-migrations
     depends_on:
     - postgres        
@@ -70,7 +70,7 @@ services:
   kong-migrations-up:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.0
     container_name: kong-migrations-up
     depends_on:
     - kong-migrations
@@ -88,7 +88,7 @@ services:
   kong-cp:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.0
     container_name: kong-cp
     hostname: kong-cp
     user: kong
@@ -183,7 +183,7 @@ services:
   kong-dp:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.0
     container_name: kong-dp
     hostname: kong-dp
     depends_on:
