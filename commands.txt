@@ -1244,8 +1244,8 @@ http -b GET kongcluster:8001/plugins/$OIDC_PLUGIN_ID | jq .config.password_param
 http GET kongcluster:8000/oidc -a employee:test
 ### curl -iX GET kongcluster:8000/oidc -u employee:test
 
-BEARER_TOKEN=$(http kongcluster:8000/oidc -a employee:test | jq -r '.headers.authorization' | cut -c 7-)
-### BEARER_TOKEN=$(curl -sX GET kongcluster:8000/oidc -u employee:test | jq -r '.headers.authorization' | cut -c 7-)
+BEARER_TOKEN=$(http kongcluster:8000/oidc -a employee:test | jq -r '.headers.Authorization' | cut -c 7-)
+### BEARER_TOKEN=$(curl -sX GET kongcluster:8000/oidc -u employee:test | jq -r '.headers.Authorization' | cut -c 7-)
 
 ## Task: Decoding the Bearer Token
 
