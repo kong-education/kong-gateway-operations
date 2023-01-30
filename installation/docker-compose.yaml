@@ -170,11 +170,13 @@ services:
       KONG_PORTAL: "on"
       KONG_PORTAL_GUI_PROTOCOL: "https"
      #KONG_PORTAL_GUI_HOST: "portal.kong.lan:8446"
-      KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST:-localhost:8003}
+      KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST}
+      # KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST:-localhost:8003}
       KONG_PORTAL_GUI_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_GUI_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
      #KONG_PORTAL_API_URL: "https://portal-api.kong.lan:8447"
-      KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL:-http://localhost:8004}
+      KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL}
+      # KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL:-http://localhost:8004}
       KONG_PORTAL_API_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_API_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
       KONG_PORTAL_AUTH: "basic-auth"
