@@ -137,7 +137,7 @@ services:
       KONG_PORTAL_GUI_ERROR_LOG: /srv/shared/logs/portalgui_error.log
       KONG_STATUS_ACCESS_LOG: /srv/shared/logs/status_access.log
       KONG_STATUS_ERROR_LOG: /srv/shared/logs/status_error.log
-      KONG_AUDIT_LOG: "on"/KONG_
+      KONG_AUDIT_LOG: "on"
       KONG_STATUS_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_STATUS_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
       KONG_ANONYMOUS_REPORTS: "off"
