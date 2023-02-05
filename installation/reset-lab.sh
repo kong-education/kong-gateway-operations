@@ -5,7 +5,9 @@ sudo setfacl -m user:ubuntu:rw /var/run/docker.sock
 red=$(tput setaf 1)
 normal=$(tput sgr0)
 
-printf "\n${red}Setting up Kong Gateway Operations Lab Envrinment.${normal}\n"
+source set-env.sh
+
+printf "\n${green}Setting up Kong Gateway Operations Lab Envrinment.${normal}\n"
 # printf "\n${red}Setting up CA, certificate and key for Docker.${normal}\n"
 # mkdir -p ~/.docker
 # curl -so ~/.docker/ca.pem http://docker:9000/ca.pem
