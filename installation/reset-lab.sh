@@ -72,14 +72,16 @@ sed -i "s|KONG_ADMIN_API_URI|$KONG_ADMIN_API_URI|g" ~/kong-gateway-operations/in
 cp ~/kong-gateway-operations/installation/deck/deck.yaml ~/.deck.yaml
 deck ping
 
-printf "\n${red}Copying the script to user path.${normal}\n"
-if [ ! -f "~/.local/bin/scram.sh" ]
-then
-  mkdir -p ~/.local/bin
-  cp ~/kong-gateway-operations/installation/reset-lab.sh ~/.local/bin/
-  source ~/.profile
-fi
+# printf "\n${red}Copying the script to user path.${normal}\n"
+# if [ ! -f "~/.local/bin/scram.sh" ]
+# then
+#   mkdir -p ~/.local/bin
+#   cp ~/kong-gateway-operations/installation/reset-lab.sh ~/.local/bin/
+#   source ~/.profile
+# fi
 
 # printf "\n${red}Displaying Gateway URIs${normal}\n"
 # env | grep KONG | sort
 printf "\n${red}Completed Setting up Kong Gateway Operations Lab Envrinment.${normal}\n\n"
+
+echo "Kong Manager can be access on $KONG_ADMIN_GUI_URL"

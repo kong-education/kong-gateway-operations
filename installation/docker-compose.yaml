@@ -67,7 +67,7 @@ services:
       KONG_PG_USER: kong
       KONG_PG_PASSWORD: kong
       KONG_PASSWORD: password
-     #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
  
   kong-migrations-up:
     networks:
@@ -85,7 +85,7 @@ services:
       KONG_PG_USER: kong
       KONG_PG_PASSWORD: kong
       KONG_PASSWORD: password
-     #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
 
   kong-cp:
     networks:
@@ -145,38 +145,22 @@ services:
       KONG_VITALS_STRATEGY: prometheus
       KONG_VITALS_STATSD_ADDRESS: statsd:9125
       KONG_VITALS_TSDB_ADDRESS: prometheus:9090
-     #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
-     #KONG_ENFORCE_RBAC: "on"
-     #KONG_ADMIN_API_URI: "https://api.kong.lan:8444"
-      # KONG_ADMIN_API_URI: ${KONG_ADMIN_API_URI:-http://localhost:8001}
-
+      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      #KONG_ENFORCE_RBAC: "on"
       KONG_ADMIN_API_URI: ${KONG_ADMIN_API_URI}
-      # KONG_ADMIN_API_URI: "http://instance.autolab.strigo.io:8001"
-      # KONG_ADMIN_API_URI: "https://instance.autolab.strigo.io:8444"
-      # KONG_ADMIN_API_URI: "*"
-
       KONG_ADMIN_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_ADMIN_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
-     #KONG_ADMIN_GUI_URL: "https://manager.kong.lan:8445"
-
       KONG_ADMIN_GUI_URL: ${KONG_ADMIN_GUI_URL}
-      # KONG_ADMIN_GUI_URL: "http://instance.autolab.strigo.io:8002"
-      # KONG_ADMIN_GUI_URL: "https://instance.autolab.strigo.io:8445"
-
       KONG_ADMIN_GUI_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_ADMIN_GUI_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
-     #KONG_ADMIN_GUI_AUTH: "basic-auth"
-     #KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\":true, \"cookie_lifetime\":36000}"
+      #KONG_ADMIN_GUI_AUTH: "basic-auth"
+      #KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\":true, \"cookie_lifetime\":36000}"
       KONG_PORTAL: "on"
       KONG_PORTAL_GUI_PROTOCOL: "https"
-     #KONG_PORTAL_GUI_HOST: "portal.kong.lan:8446"
       KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST}
-      # KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST:-localhost:8003}
       KONG_PORTAL_GUI_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_GUI_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
-     #KONG_PORTAL_API_URL: "https://portal-api.kong.lan:8447"
       KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL}
-      # KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL:-http://localhost:8004}
       KONG_PORTAL_API_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_API_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
       KONG_PORTAL_AUTH: "basic-auth"
@@ -190,7 +174,7 @@ services:
       KONG_SMTP_ADMIN_EMAILS: "kongtest@gmail.com"
       KONG_SMTP_HOST: "smtp"
       KONG_SMTP_PORT: 1025
-     #KONG_SMTP_DOMAIN: ${KONG_SMTP_DOMAIN}
+      #KONG_SMTP_DOMAIN: ${KONG_SMTP_DOMAIN}
       KONG_NGINX_WORKER_PROCESSES: 1
       KONG_LUA_SSL_TRUSTED_CERTIFICATE: "system"
  
@@ -230,7 +214,7 @@ services:
       KONG_PROXY_STREAM_ACCESS_LOG: /srv/shared/logs/proxystream_access.log basic
       KONG_PROXY_STREAM_ERROR_LOG: /srv/shared/logs/proxystream_error.log
       KONG_DATABASE: "off"
-     #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
       KONG_ANONYMOUS_REPORTS: "off"
       KONG_VITALS: "on"
       KONG_VITALS_STRATEGY: prometheus
