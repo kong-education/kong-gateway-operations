@@ -28,7 +28,8 @@ services:
   kong-migrations:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    # image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.1
     container_name: kong-migrations
     depends_on:
     - postgres        
@@ -46,7 +47,8 @@ services:
   kong-migrations-up:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    # image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.1
     container_name: kong-migrations-up
     depends_on:
     - kong-migrations
@@ -64,7 +66,8 @@ services:
   kong-cp:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.1
+    # image: kong/kong-gateway:2.8-alpine
     container_name: kong-cp
     hostname: kong-cp
     user: kong
@@ -130,15 +133,18 @@ services:
       #KONG_ADMIN_GUI_AUTH: "basic-auth"
       #KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\":true, \"cookie_lifetime\":36000}"
       KONG_PORTAL: "on"
-      KONG_PORTAL_GUI_PROTOCOL: "https"
+      # KONG_PORTAL_GUI_PROTOCOL: "https"
+      KONG_PORTAL_GUI_PROTOCOL: "http"
       KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST}
       KONG_PORTAL_GUI_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_GUI_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
       KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL}
       KONG_PORTAL_API_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_API_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
+      # KONG_PORTAL_AUTO_APPROVE: true
       KONG_PORTAL_AUTH: "basic-auth"
-      KONG_PORTAL_SESSION_CONF: "{\"cookie_name\":\"portal-session\",\"secret\":\"this_is_my_secret\",\"storage\":\"kong\",\"cookie_secure\":true, \"cookie_domain\":\".labs.konghq.com\", \"cookie_samesite\":\"off\"}"
+      KONG_PORTAL_SESSION_CONF: "{\"cookie_name\":\"portal-session\",\"secret\":\"this_is_my_secret\",\"storage\":\"kong\",\"cookie_secure\":false, \"cookie_samesite\":\"off\"}"
+      # KONG_PORTAL_SESSION_CONF: "{\"cookie_name\":\"portal-session\",\"secret\":\"this_is_my_secret\",\"storage\":\"kong\",\"cookie_secure\":false, \"cookie_domain\":\".labs.konghq.com\", \"cookie_samesite\":\"off\"}"
       KONG_PORTAL_EMAIL_VERIFICATION: "off"
       KONG_PORTAL_EMAILS_FROM: "kongtest@gmail.com"
       KONG_PORTAL_EMAILS_REPLY_TO: "kongtest@gmail.com"
@@ -155,7 +161,8 @@ services:
   kong-dp:
     networks:
     - kong-edu-net
-    image: kong/kong-gateway:2.8-alpine
+    # image: kong/kong-gateway:2.8-alpine
+    image: kong/kong-gateway:3.1
     container_name: kong-dp
     hostname: kong-dp
     depends_on:
