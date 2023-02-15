@@ -28,11 +28,11 @@ services:
   kong-migrations:
     networks:
     - kong-edu-net
-    # image: kong/kong-gateway:2.8-alpine
     image: kong/kong-gateway:3.1
+    # image: kong/kong-gateway:2.8-alpine
     container_name: kong-migrations
     depends_on:
-    - postgres        
+    - postgres
     command: kong migrations bootstrap
     restart: on-failure
     environment:
@@ -42,13 +42,13 @@ services:
       KONG_PG_USER: kong
       KONG_PG_PASSWORD: kong
       KONG_PASSWORD: password
-      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
- 
+      KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+
   kong-migrations-up:
     networks:
     - kong-edu-net
-    # image: kong/kong-gateway:2.8-alpine
     image: kong/kong-gateway:3.1
+    # image: kong/kong-gateway:2.8-alpine
     container_name: kong-migrations-up
     depends_on:
     - kong-migrations
@@ -61,7 +61,7 @@ services:
       KONG_PG_USER: kong
       KONG_PG_PASSWORD: kong
       KONG_PASSWORD: password
-      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
 
   kong-cp:
     networks:
@@ -74,8 +74,10 @@ services:
     depends_on:
     - kong-migrations-up
     volumes:
-    - /usr/local/kong/logs:/srv/shared/logs
     - ${PWD}/ssl-certs:/srv/shared/ssl
+    - ${PWD}/logs:/srv/shared/logs
+    # - /usr/local/kong/logs:/srv/shared/logs
+    # - /home/ubuntu/kong-gateway-operations/installation/ssl-certs:/srv/shared/ssl
     healthcheck:
       test: ["CMD", "kong", "health"]
       interval: 30s
@@ -122,26 +124,33 @@ services:
       KONG_VITALS_STRATEGY: prometheus
       KONG_VITALS_STATSD_ADDRESS: statsd:9125
       KONG_VITALS_TSDB_ADDRESS: prometheus:9090
-      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
-      #KONG_ENFORCE_RBAC: "on"
-      KONG_ADMIN_API_URI: ${KONG_ADMIN_API_URI}
+      KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+     #KONG_ENFORCE_RBAC: "on"
+     #KONG_ADMIN_API_URI: "https://api.kong.lan:8444"
+      KONG_ADMIN_API_URI: ${KONG_ADMIN_API_URI:-http://localhost:8001}
       KONG_ADMIN_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_ADMIN_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
-      KONG_ADMIN_GUI_URL: ${KONG_ADMIN_GUI_URL}
+     #KONG_ADMIN_GUI_URL: "https://manager.kong.lan:8445"
+      KONG_ADMIN_GUI_URL: ${KONG_ADMIN_GUI_URL:-http://localhost:8002}
       KONG_ADMIN_GUI_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_ADMIN_GUI_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
-      #KONG_ADMIN_GUI_AUTH: "basic-auth"
-      #KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\":true, \"cookie_lifetime\":36000}"
+     #KONG_ADMIN_GUI_AUTH: "basic-auth"
+     #KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\":true, \"cookie_lifetime\":36000}"
       KONG_PORTAL: "on"
-      KONG_PORTAL_GUI_PROTOCOL: "https"
-      KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST}
+      KONG_PORTAL_GUI_PROTOCOL: "http"
+      # KONG_PORTAL_GUI_PROTOCOL: "https"
+     #KONG_PORTAL_GUI_HOST: "portal.kong.lan:8446"
+      KONG_PORTAL_GUI_HOST: ${KONG_PORTAL_GUI_HOST:-localhost:8003}
       KONG_PORTAL_GUI_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_GUI_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
-      KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL}
+     #KONG_PORTAL_API_URL: "https://portal-api.kong.lan:8447"
+      KONG_PORTAL_API_URL: ${KONG_PORTAL_API_URL:-http://localhost:8004}
       KONG_PORTAL_API_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_PORTAL_API_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
+      KONG_PORTAL_AUTO_APPROVE: true
       KONG_PORTAL_AUTH: "basic-auth"
-      KONG_PORTAL_SESSION_CONF: "{\"cookie_name\":\"portal-session\",\"secret\":\"this_is_my_secret\",\"storage\":\"kong\",\"cookie_secure\":true, \"cookie_domain\":\".labs.konghq.com\", \"cookie_samesite\":\"off\"}"
+      KONG_PORTAL_SESSION_CONF: "{\"cookie_name\":\"portal-session\",\"secret\":\"this_is_my_secret\",\"storage\":\"kong\",\"cookie_secure\":false,\"cookie_samesite\":\"off\"}"
+      # KONG_PORTAL_SESSION_CONF: "{\"cookie_name\":\"portal-session\",\"secret\":\"this_is_my_secret\",\"storage\":\"kong\",\"cookie_secure\":true, \"cookie_domain\":\".labs.konghq.com\", \"cookie_samesite\":\"off\"}"
       KONG_PORTAL_EMAIL_VERIFICATION: "off"
       KONG_PORTAL_EMAILS_FROM: "kongtest@gmail.com"
       KONG_PORTAL_EMAILS_REPLY_TO: "kongtest@gmail.com"
@@ -151,22 +160,28 @@ services:
       KONG_SMTP_ADMIN_EMAILS: "kongtest@gmail.com"
       KONG_SMTP_HOST: "smtp"
       KONG_SMTP_PORT: 1025
-      #KONG_SMTP_DOMAIN: ${KONG_SMTP_DOMAIN}
+     #KONG_SMTP_DOMAIN: ${KONG_SMTP_DOMAIN}
       KONG_NGINX_WORKER_PROCESSES: 1
       KONG_LUA_SSL_TRUSTED_CERTIFICATE: "system"
- 
+      KONG_LOG_LEVEL: "debug"
+
+
   kong-dp:
     networks:
     - kong-edu-net
-    # image: kong/kong-gateway:2.8-alpine
     image: kong/kong-gateway:3.1
+    # image: kong/kong-gateway:2.8-alpine
     container_name: kong-dp
     hostname: kong-dp
     depends_on:
     - kong-cp
     volumes:
-    - /usr/local/kong/logs:/srv/shared/logs
     - ${PWD}/ssl-certs:/srv/shared/ssl
+    - ${PWD}/logs:/srv/shared/logs
+    # - /Users/johnfitzpatrick/GitHub/kong-for-developers/gw-ops/installation/ssl-certs:/srv/shared/ssl
+    # - /Users/johnfitzpatrick/GitHub/kong-for-developers/scratch:/srv/shared/logs
+    # - /usr/local/kong/logs:/srv/shared/logs
+    # - /home/ubuntu/kong-gateway-operations/installation/ssl-certs:/srv/shared/ssl
     healthcheck:
       test: ["CMD", "kong", "health"]
       interval: 30s
@@ -192,7 +207,7 @@ services:
       KONG_PROXY_STREAM_ACCESS_LOG: /srv/shared/logs/proxystream_access.log basic
       KONG_PROXY_STREAM_ERROR_LOG: /srv/shared/logs/proxystream_error.log
       KONG_DATABASE: "off"
-      #KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
       KONG_ANONYMOUS_REPORTS: "off"
       KONG_VITALS: "on"
       KONG_VITALS_STRATEGY: prometheus
@@ -207,7 +222,7 @@ services:
       KONG_TRACING_TIME_THRESHOLD: 0
       KONG_TRACING_WRITE_ENDPOINT: /srv/shared/logs/granular_tracing.log
       KONG_TRACING_DEBUG_HEADER: X-Trace
-  
+
   smtp-server:
     networks:
     - kong-edu-net
@@ -218,40 +233,10 @@ services:
       test: ["CMD-SHELL", "exit 0"]
       interval: 16s
       timeout: 16s
-      retries: 16        
+      retries: 16
     restart: on-failure
     ports:
     - "1080:1080/tcp"
-
-  mockbin:
-    networks:
-    - kong-edu-net
-    image: mashape/mockbin:latest
-    container_name: mockbin
-    hostname: mockbin
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 30s
-      timeout: 30s
-      retries: 3        
-    restart: on-failure
-    ports:
-    - "8888:8080/tcp"
-
-  redis:
-    networks:
-    - kong-edu-net
-    image: redis:alpine3.15
-    container_name: redis
-    hostname: redis
-    healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-      interval: 30s
-      timeout: 30s
-      retries: 3        
-    restart: on-failure
-    ports:
-    - "6379:6379/tcp"
 
   keycloak:
     networks:
@@ -261,7 +246,7 @@ services:
     hostname: keycloak
     command: -Dkeycloak.profile.feature.upload_scripts=enabled
     volumes:
-    - /home/ubuntu/misc:/data
+    - ${PWD}/misc:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://keycloak:8080/auth/realms/master"]
       # test: ["CMD", "curl", "-f", "http://keycloak/auth/realms/master"]
@@ -278,61 +263,18 @@ services:
       KEYCLOAK_PASSWORD: admin
       KEYCLOAK_IMPORT: "/data/kong_realm_template.json"
       PROXY_ADDRESS_FORWARDING: "true"
-  
-  
-  prometheus:
+
+  redis:
     networks:
     - kong-edu-net
-    image: prom/prometheus:v2.34.0
-    container_name: prometheus
-    hostname: prometheus
-    command: --config.file=/etc/prometheus/prometheus.yaml --log.level=debug
+    image: redis:alpine3.15
+    container_name: redis
+    hostname: redis
     healthcheck:
-      test: ["CMD", "wget", "-S", "--spider", "http://prometheus:9090"]
-      interval: 10s
-      timeout: 15s
-      retries: 10  
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
     ports:
-    - 9090:9090
-    volumes:
-    - /home/ubuntu/misc/prometheus.yaml:/etc/prometheus/prometheus.yaml
-
-  statsd:
-    networks:
-    - kong-edu-net
-    image: kong/statsd-exporter-advanced:0.3.1
-    container_name: statsd
-    hostname: statsd
-    depends_on:
-    - prometheus
-    healthcheck:
-      test: ["CMD", "wget", "-S", "--spider", "http://statsd:9102"]
-      interval: 10s
-      timeout: 15s
-      retries: 10 
-    command: --statsd.mapping-config=/tmp/statsd.rules.yaml --statsd.listen-unixgram=''
-    ports:
-    - 9125:9125
-    - 9102:9102
-    volumes:
-    - /home/ubuntu/misc/statsd.rules.yaml:/tmp/statsd.rules.yaml
-
-  grafana:
-    networks:
-    - kong-edu-net
-    image: grafana/grafana:8.4.6
-    container_name: grafana
-    hostname: grafana
-    depends_on:
-    - prometheus
-    healthcheck:
-      test: ["CMD", "wget", "-S", "--spider", "http://grafana:3000"]
-      interval: 10s
-      timeout: 15s
-      retries: 10 
-    ports:
-    - 3000:3000
-
-
-
-
+    - "6379:6379/tcp"
