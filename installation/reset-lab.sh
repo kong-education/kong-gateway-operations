@@ -21,9 +21,9 @@ cd ~/
 if [ -d "kong-gateway-operations" ]; then mv "kong-gateway-operations" "kong-gateway-operations.OLD"; fi
 printf "\n${red}Cloning Kong Gateway Operations Repo under user home directory.${normal}\n"
 
-git clone https://github.com/kong-education/kong-gateway-operations.git ~/kong-gateway-operations
-cd ~/kong-gateway-operations/installation
-git checkout aws-ec2
+# git clone https://github.com/kong-education/kong-gateway-operations.git ~/kong-gateway-operations
+# cd ~/kong-gateway-operations/installation
+# git checkout aws-ec2
 
 # printf "\n${red}Copying SSL certificates to shared location.${normal}"
 # cp -R ssl-certs /srv/shared

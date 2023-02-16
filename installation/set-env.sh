@@ -17,3 +17,4 @@ export KONG_PORTAL_API_URL=http://$DYNAMIC_FQDN:8004
 
 
 # export KONG_LICENSE_DATA=$(cat /usr/local/kong/license.json)
+*
