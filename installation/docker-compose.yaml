@@ -249,3 +249,29 @@ services:
     ports:
     - "6379:6379/tcp"
 
+  keycloak:
+    networks:
+    - kong-edu-net
+    image: jboss/keycloak:16.1.1
+    container_name: keycloak
+    hostname: keycloak
+    command: -Dkeycloak.profile.feature.upload_scripts=enabled
+    volumes:
+    - /home/ubuntu/kong-gateway-operations/installation/misc:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://keycloak:8080/auth/realms/master"]
+      # test: ["CMD", "curl", "-f", "http://keycloak/auth/realms/master"]
+      # test: ["CMD", "curl", "-f", "$KEYCLOAK_URI/auth/realms/master"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+    ports:
+    - 8080:8080
+    environment:
+      DB_VENDOR: H2
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: "/data/kong_realm_template.json"
+      PROXY_ADDRESS_FORWARDING: "true"
+  
