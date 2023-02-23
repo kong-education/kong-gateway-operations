@@ -5,11 +5,14 @@ sudo setfacl -m user:ubuntu:rw /var/run/docker.sock
 red=$(tput setaf 1)
 normal=$(tput sgr0)
 
+source /home/ubuntu/.bashrc
+
 export DYNAMIC_FQDN=$(echo $STRIGO_RESOURCE_DNS)
 export KONG_ADMIN_API_URI=http://$DYNAMIC_FQDN:8001
 export KONG_ADMIN_GUI_URL=http://$DYNAMIC_FQDN:8002
 export KONG_PORTAL_GUI_HOST=$DYNAMIC_FQDN:8003
 export KONG_PORTAL_API_URL=http://$DYNAMIC_FQDN:8004
+export KONG_LICENSE_DATA=$(cat /usr/local/kong/license.json)
 
 printf "\n${red}Bringing up Kong Gateway.${normal}\n"
 

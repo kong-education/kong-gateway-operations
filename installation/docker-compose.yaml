@@ -122,7 +122,7 @@ services:
       KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
       #KONG_ENFORCE_RBAC: "on"
       #KONG_ADMIN_GUI_AUTH: "basic-auth"
-      #KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\":true, \"cookie_lifetime\":36000}"
+      # KONG_ADMIN_GUI_SESSION_CONF: "{ \"cookie_name\": \"manager-session\", \"secret\": \"this_is_my_other_secret\", \"storage\": \"kong\", \"cookie_secure\": false, \"cookie_lifetime\": 60, \"cookie_samesite\": \"off\"}"
       KONG_ADMIN_API_URI: ${KONG_ADMIN_API_URI}
       KONG_ADMIN_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
       KONG_ADMIN_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
