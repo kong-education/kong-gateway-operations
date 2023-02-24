@@ -6,7 +6,6 @@ red=$(tput setaf 1)
 normal=$(tput sgr0)
 
 source /home/ubuntu/.bashrc
-
 export DYNAMIC_FQDN=$(echo $STRIGO_RESOURCE_DNS)
 export KONG_ADMIN_API_URI=http://$DYNAMIC_FQDN:8001
 export KONG_ADMIN_GUI_URL=http://$DYNAMIC_FQDN:8002
