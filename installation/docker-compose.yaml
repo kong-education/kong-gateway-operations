@@ -258,7 +258,7 @@ services:
     ports:
     - 9090:9090
     volumes:
-    - /home/ubuntu/misc/prometheus.yaml:/etc/prometheus/prometheus.yaml
+    - ~/kong-gateway-operations/installation/misc/prometheus.yaml:/etc/prometheus/prometheus.yaml
 
   statsd:
     networks:
@@ -278,7 +278,7 @@ services:
     - 9125:9125
     - 9102:9102
     volumes:
-    - /home/ubuntu/misc/statsd.rules.yaml:/tmp/statsd.rules.yaml
+    - ~/kong-gateway-operations/installation/misc/statsd.rules.yaml:/tmp/statsd.rules.yaml
 
   grafana:
     networks:
