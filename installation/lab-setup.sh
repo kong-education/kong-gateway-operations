@@ -21,16 +21,16 @@ printf "\n${red}Waiting for Gateway startup to finish.${normal}"
 
 until curl --head localhost:8001 > /dev/null 2>&1; do sleep 1; done
 
-printf "\n${red}Applying Enterprise License.${normal}\n"
-http --headers POST "localhost:8001/licenses" payload=@/usr/local/kong/license.json | grep HTTP
+# printf "\n${red}Applying Enterprise License.${normal}\n"
+# http --headers POST "localhost:8001/licenses" payload=@/usr/local/kong/license.json | grep HTTP
 
-printf "\n${red}Recreating Contral Plane.${normal}\n"
-docker-compose stop kong-cp; docker-compose rm -f kong-cp; docker-compose up -d kong-cp
-# sleep 8
-until curl --head localhost:8001 > /dev/null 2>&1; do sleep 1; done
+# printf "\n${red}Recreating Contral Plane.${normal}\n"
+# docker-compose stop kong-cp; docker-compose rm -f kong-cp; docker-compose up -d kong-cp
+# # sleep 8
+# until curl --head localhost:8001 > /dev/null 2>&1; do sleep 1; done
 
-printf "\n${red}Checking Admin API.${normal}\n"
-curl -IsX GET localhost:8001 | grep Server
+# printf "\n${red}Checking Admin API.${normal}\n"
+# curl -IsX GET localhost:8001 | grep Server
 
 # printf "\n${red}Enabling the Developer Portal.${normal}\n"
 # curl -siX PATCH localhost:8001/workspaces/default -d "config.portal=true" | grep HTTP
