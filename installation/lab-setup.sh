@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+until [ -f /home/ubuntu/.initcomplete ]
+do
+  sleep 2
+  echo "Waiting for vm to initialise"
+done
+
 sudo setfacl -m user:ubuntu:rw /var/run/docker.sock
 
 red=$(tput setaf 1)
