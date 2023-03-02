@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# read -p "What is the consumer's name?" CONSUMER
+read -p "What is the consumer's name?" CONSUMER
 
-# req=$(http -h $KONG_ADMIN_API_URL/consumers/$CONSUMER | head -1 )
-# if [ "$req" != "HTTP/1.1 200 OK" ]; then
-#   echo User $CONSUMER does not exist
-# fi
+req=$(http -h $KONG_ADMIN_API_URI/consumers/$CONSUMER | head -1 ) 2>/dev/null
+if [ "$req" != "HTTP/1.1 200 OK" ]; then
+  echo User $CONSUMER does not exist
+fi
 
-CONSUMER=jane
+# CONSUMER=jane
 
 HEADER=$(echo -n '{"alg":"RS256","typ":"JWT"}' | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n')
 PAYLOAD=$(echo -n '{"iss":"'$CONSUMER-issuer'"}' | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n')
