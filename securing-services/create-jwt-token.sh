@@ -4,7 +4,7 @@ read -p "What is the consumer's name?" name
 
 CONSUMER=${name:-Jane}
 
-req=$(http -h $KONG_ADMIN_API_URL/consumers/$CONSUMER | head -1 )
+req=$(http -h $KONG_ADMIN_API_URI/consumers/$CONSUMER | head -1 )
 if [ "$req" != "HTTP/1.1 200 OK" ]; then
   echo User $CONSUMER does not exist
 fi
