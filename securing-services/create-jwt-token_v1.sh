@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Or see https://gist.github.com/briceburg/0d6589714862004609daf77f4fc4aac9
+
 name=$1
 CONSUMER=${name:-Jane}
 
@@ -10,4 +12,3 @@ PEM=$(cat ./$CONSUMER.pem)
 SIG=$(openssl dgst -sha256 -sign <(echo -n "${PEM}") <(echo -n "${HEADER_PAYLOAD}") | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n')
 TOKEN=$HEADER.$PAYLOAD.$SIG
 echo $TOKEN
-
