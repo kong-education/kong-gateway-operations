@@ -3,11 +3,6 @@
 name=$1
 CONSUMER=${name:-Jane}
 
-req=$(http -h $KONG_ADMIN_API_URI/consumers/$CONSUMER | head -1 )
-if [ "$req" != "HTTP/1.1 200 OK" ]; then
-  echo User $CONSUMER does not exist
-fi
-
 HEADER=$(echo -n '{"alg":"RS256","typ":"JWT"}' | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n')
 PAYLOAD=$(echo -n '{"iss":"'$CONSUMER-issuer'"}' | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n')
 HEADER_PAYLOAD=$HEADER.$PAYLOAD
