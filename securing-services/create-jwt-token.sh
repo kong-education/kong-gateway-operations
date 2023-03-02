@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "What is the consumer's name?" name
+read -p "What is the consumer's name? " name
 
 CONSUMER=${name:-Jane}
 
