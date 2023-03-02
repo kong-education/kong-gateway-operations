@@ -35,6 +35,8 @@ main(){
 
   log "generated JWT token. expires in $expire_seconds seconds -->\\n\\n"
   printf '%s' "${signed_content}.${signature}"
+  echo ""
+  export TOKEN="${signed_content}.${signature}"
 }
 
 base64_urlencode() { openssl enc -base64 -A | tr '+/' '-_' | tr -d '='; }
