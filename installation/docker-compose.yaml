@@ -116,7 +116,7 @@ services:
       KONG_STATUS_SSL_CERT: "/srv/shared/ssl/wildcard.pem"
       KONG_ANONYMOUS_REPORTS: "off"
       KONG_VITALS: "on"
-      KONG_VITALS_STRATEGY: prometheus
+      # KONG_VITALS_STRATEGY: prometheus
       KONG_VITALS_STATSD_ADDRESS: statsd:9125
       KONG_VITALS_TSDB_ADDRESS: prometheus:9090
       KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
@@ -191,7 +191,7 @@ services:
       KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
       KONG_ANONYMOUS_REPORTS: "off"
       KONG_VITALS: "on"
-      KONG_VITALS_STRATEGY: prometheus
+      # KONG_VITALS_STRATEGY: prometheus
       KONG_VITALS_STATSD_ADDRESS: statsd:9125
       KONG_VITALS_TSDB_ADDRESS: prometheus:9090
       KONG_SSL_CERT_KEY: "/srv/shared/ssl/wildcard.key"
