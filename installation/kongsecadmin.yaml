@@ -46,7 +46,7 @@ services:
     - KONG_PASSWORD=admin
     - KONG_LICENSE_DATA=${KONG_LICENSE_DATA}   
   volumes:
-   - /srv/shared/misc:/home/kong
+   - ${PWD}/misc:/home/kong
   networks:
    - kong-edu-net  
  kong-ee:
