@@ -9,4 +9,5 @@ export KONG_PORTAL_API_URL=http://$STRIGO_RESOURCE_DNS:8004
 export KONG_LICENSE_DATA=$(cat /usr/local/kong/license.json)
 export PROMETHEUS_URI=http://$STRIGO_RESOURCE_DNS:9090
 export GRAFANA_URI=http://$STRIGO_RESOURCE_DNS:3000
+export KONG_LICENSE_DATA=$(cat /usr/local/kong/license.json)
 
