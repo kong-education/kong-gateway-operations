@@ -113,8 +113,8 @@ services:
    - elasticsearch
   command: ["--strict.perms=false"]
   volumes:
-   - /srv/shared/elk/filebeat.yml:/usr/share/filebeat/filebeat.yml
-   - /srv/shared/elk/elasticsearch_template.json:/usr/share/filebeat/elasticsearch_template.json  
+   - ${PWD}/elk/filebeat.yml:/usr/share/filebeat/filebeat.yml
+   - ${PWD}/elk/elasticsearch_template.json:/usr/share/filebeat/elasticsearch_template.json  
   networks:
   - kong-net
 networks:
