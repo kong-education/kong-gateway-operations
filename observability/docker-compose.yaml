@@ -1,0 +1,121 @@
+version: "3"
+services:
+ postgres:
+  image: postgres:12.5
+  networks:
+   - kong-net
+  restart: always
+  container_name: postgres
+  environment:
+   - POSTGRES_USER=kong
+   - POSTGRES_DB=kong
+   - POSTGRES_HOST_AUTH_METHOD=trust
+  ports:
+   - 5432:5432
+  # volumes:
+  # - ./postgres-data:/var/lib/postgresql/data
+ kong-ent-bootstrap:
+  image: kong/kong-gateway:2.5.0.1-alpine
+  container_name: kong-ent-bootstrap
+  hostname: kongBootstrap
+  links:
+   - postgres
+  depends_on:
+   - postgres
+  restart: on-failure
+  command: "kong migrations bootstrap"
+  networks:
+   - kong-net
+  environment:
+   - KONG_LICENSE_DATA=$KONG_LICENSE
+   - KONG_PASSWORD=kong_admin
+   - KONG_AUDIT_LOG=on
+   - KONG_LOG_LEVEL=debug
+   - KONG_DATABASE=postgres
+   - KONG_PG_HOST=postgres 
+ kong-ent:
+  image: kong/kong-gateway:3.0.0.0-alpine
+  container_name: kong-ent
+  depends_on:
+   - postgres
+  restart: always
+  ports:
+   - 8000:8000
+   - 8001:8001
+   - 8002:8002
+   - 8003:8003
+   - 8004:8004
+   - 8443:8443
+   - 8444:8444
+   - 8445:8445
+   - 8446:8446
+   - 8447:8447
+  networks:
+   - kong-net
+  command: "kong start --run-migrations" #NOT PRODUCTION
+  environment:
+   - KONG_AUDIT_LOG=on
+   - KONG_LOG_LEVEL=debug
+   - KONG_PORTAL_GUI_PROTOCOL=http
+   - KONG_DATABASE=postgres
+   - KONG_PG_HOST=postgres
+   - KONG_CASSANDRA_CONTACT_POINTS=cassandra
+   - KONG_VITALS=on
+   - KONG_ANONYMOUS_REPORTS=off
+   - KONG_PROXY_ACCESS_LOG=/dev/stdout
+   - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+   - KONG_PROXY_ERROR_LOG=/dev/stderr
+   - KONG_ADMIN_ERROR_LOG=/dev/stderr
+   - KONG_PROXY_LISTEN=0.0.0.0:8000, 0.0.0.0:8443 ssl
+   - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+   - KONG_ADMIN_GUI_LISTEN=0.0.0.0:8002, 0.0.0.0:8445 ssl
+   - KONG_PORTAL_GUI_LISTEN=0.0.0.0:8003, 0.0.0.0:8446 ssl
+   - KONG_ADMIN_GUI_URL=$KONG_MANAGER_URI
+   - KONG_PORTAL_API_LISTEN=0.0.0.0:8004, 0.0.0.0:8447 ssl
+   - KONG_ADMIN_API_URI=$KONG_ADMIN_API_URI
+   - KONG_PORTAL_GUI_HOST=$KONG_PORTAL_GUI_HOST
+   - KONG_PORTAL_API_URL=$KONG_PORTAL_API_URI
+   - KONG_PROXY_URL=$KONG_PROXY_URI
+   - KONG_VITALS_STRATEGY=database
+   - KONG_VITALS_TSDB_ADDRESS=prometheus:9090
+   - KONG_VITALS_STATSD_ADDRESS=statsd_exporter:9125
+   - KONG_LICENSE_DATA=$KONG_LICENSE
+   - KONG_PG_MAX_CONCURRENT_QUERIES=5
+   - KONG_NGINX_WORKER_PROCESSES=1
+ elasticsearch:
+  image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+  container_name: elasticsearch
+  environment: 
+  - discovery.type=single-node
+  - xpack.security.enabled=false
+  - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+  ports:
+  - 9200:9200
+  - 9300:9300
+  networks:
+  - kong-net
+ kibana:
+  image: docker.elastic.co/kibana/kibana:7.9.3
+  container_name: kibana
+  depends_on:
+  - elasticsearch
+  ports: 
+  - 5601:5601
+  networks:
+  - kong-net
+ filebeat:
+  image: docker.elastic.co/beats/filebeat:7.9.3
+  container_name: filebeat
+  user: root
+  ports: 
+  - 9010:9010
+  depends_on:
+   - elasticsearch
+  command: ["--strict.perms=false"]
+  volumes:
+   - /srv/shared/elk/filebeat.yml:/usr/share/filebeat/filebeat.yml
+   - /srv/shared/elk/elasticsearch_template.json:/usr/share/filebeat/elasticsearch_template.json  
+  networks:
+  - kong-net
+networks:
+  kong-net:

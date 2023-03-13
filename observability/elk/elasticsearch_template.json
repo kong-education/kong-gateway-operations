@@ -1,0 +1,24 @@
+{
+    "index_patterns": ["kong-*"],
+    "mappings": {
+        "dynamic_templates": [
+            {
+                "strings_as_keyword": {
+                    "match_mapping_type": "string",
+                    "mapping": {
+                        "type": "keyword",
+                        "ignore_above": 1024
+                    }
+                }
+            }
+        ],
+        "properties": {
+          "kong.request.size": {
+            "type": "long"
+          },
+          "kong.response.size": {
+            "type": "long"
+          }
+        }
+    }
+}
